@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Station Boarding System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #172033;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            padding: 28px 16px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 16px;
+            margin-top: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            background: #167447;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .board {
+            background: #123c69;
+        }
+
+        .clear {
+            background: #b42318;
+        }
+
+        .message {
+            background: #e0f2fe;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 150px;
+            background: #e8f1ff;
+            padding: 18px;
+            border-radius: 8px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 24px;
+            margin-top: 8px;
+        }
+
+        li {
+            padding: 12px 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .empty {
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>🚌 Bus Station Boarding System</h1>
+    <p>Organized passenger boarding using the Queue data structure</p>
+</header>
+
+<main>
+    <div class="message" th:if="${message}"
+         th:text="${message}" role="status"></div>
+
+    <section class="card">
+        <h2>Register Passenger</h2>
+
+        <form action="/add" method="post">
+            <label for="name">Passenger Name</label>
+            <input id="name" name="name"
+                   type="text" maxlength="80" required>
+
+            <label for="destination">Destination</label>
+            <input id="destination" name="destination"
+                   type="text" maxlength="100" required>
+
+            <button type="submit">Join Boarding Queue</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Queue Overview</h2>
+
+        <div class="stats">
+            <div class="stat">
+                Passengers Waiting
+                <strong th:text="${waitingCount}">0</strong>
+            </div>
+
+            <div class="stat">
+                Next to Board
+                <strong th:text="${nextPassenger}">None</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Waiting Passengers</h2>
+        <p class="empty" th:if="${#lists.isEmpty(passengers)}">
+            No passengers are waiting.
+        </p>
+
+        <ol>
+            <li th:each="passenger : ${passengers}"
+                th:text="${passenger}"></li>
+        </ol>
+
+        <form action="/board" method="post">
+            <button class="board" type="submit">
+                Board Next Passenger
+            </button>
+        </form>
+
+        <form action="/clear" method="post">
+            <button class="clear" type="submit">
+                Clear Waiting Queue
+            </button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    Bus Station Boarding System | Java and Spring Boot
+</footer>
+</body>
+</html>
